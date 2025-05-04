@@ -1,0 +1,6 @@
+openai
+python-dotenv
+streamlit
+pandas
+jsonlines
+dspy-ai

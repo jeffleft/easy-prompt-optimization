@@ -1,0 +1,47 @@
+{
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "request": "hive query to join FACT_LIQUIDITY_SNAP and DIM_ACCOUNT, group available_amt into buckets by country",
+      "answer": "Here\u2019s a Hive query that joins the `FACT_LIQUIDITY_SNAP` and `DIM_ACCOUNT` tables, grouping the `available_amt` into buckets by country:\n\n```sql\nSELECT \n    da.country,\n    CASE \n        WHEN fls.available_amt < 1000 THEN '0-999'\n        WHEN fls.available_amt >= 1000 AND fls.available_amt < 5000 THEN '1000-4999'\n        WHEN fls.available_amt >= 5000 AND fls.available_amt < 10000 THEN '5000-9999'\n        ELSE '10000+'\n    END AS available_amt_bucket,\n    SUM(fls.available_amt) AS total_available_amt\nFROM \n    FACT_LIQUIDITY_SNAP fls\nJOIN \n    DIM_ACCOUNT da ON fls.account_id = da.account_id\nGROUP BY \n    da.country, \n    CASE \n        WHEN fls.available_amt < 1000 THEN '0-999'\n        WHEN fls.available_amt >= 1000 AND fls.available_amt < 5000 THEN '1000-4999'\n        WHEN fls.available_amt >= 5000 AND fls.available_amt < 10000 THEN '5000-9999'\n        ELSE '10000+'\n    END\nORDER BY \n    da.country, \n    available_amt_bucket;\n```\n\n### Explanation:\n- **Join Condition:** The query joins `FACT_LIQUIDITY_SNAP` (aliased as `fls`) with `DIM_ACCOUNT` (aliased as `da`) on the `account_id`.\n- **Grouping:** It groups the results by `country` and the defined buckets for `available_amt`.\n- **Buckets:** The `CASE` statement creates buckets for `available_amt`:\n  - `0-999`\n  - `1000-4999`\n  - `5000-9999`\n  - `10000+`\n- **Aggregation:** It sums the `available_amt` for each bucket and country.\n- **Ordering:** The results are ordered by `country` and `available_amt_bucket`."
+    },
+    {
+      "augmented": true,
+      "request": "I need to build a RACI matrix in Markdown for QG-EDGE (Enterprise Data Governance Engine), given a list of eight tasks and five stakeholders. Highlight if any R, A, C, or I cells are \u201cNone\u201d for a task or stakeholder. Can you help format this? I\u2019ll send the actual tasks and stakeholders next.",
+      "answer": "Absolutely! Please provide the list of tasks and stakeholders, and I will format the RACI matrix in Markdown for you, highlighting any \"None\" cells as requested. Looking forward to your input!"
+    },
+    {
+      "augmented": true,
+      "request": "snowflake sql unsettled notional per custodian for QG-SPARK, join FACT_TRANSACTIONS and DIM_ACCOUNT, handle fx if ccy != USD",
+      "answer": "To calculate the unsettled notional per custodian for QG-SPARK, joining the `FACT_TRANSACTIONS` and `DIM_ACCOUNT` tables, and handling foreign exchange (FX) when the currency is not USD, you can use the following Snowflake SQL query:\n\n```sql\nWITH FX_RATES AS (\n    SELECT \n        ccy,\n        rate_to_usd\n    FROM \n        FX_TABLE  -- Replace with your actual FX rates table\n)\n\nSELECT \n    a.custodian_id,\n    SUM(\n        CASE \n            WHEN t.ccy = 'USD' THEN t.notional\n            ELSE t.notional * f.rate_to_usd\n        END\n    ) AS unsettled_notional\nFROM \n    FACT_TRANSACTIONS t\nJOIN \n    DIM_ACCOUNT a ON t.account_id = a.account_id\nLEFT JOIN \n    FX_RATES f ON t.ccy = f.ccy\nWHERE \n    t.status = 'UNSETTLED'  -- Assuming there's a status field to filter unsettled transactions\nGROUP BY \n    a.custodian_id\nORDER BY \n    a.custodian_id;\n```\n\n### Explanation:\n- **CTE (Common Table Expression)**: `FX_RATES` is used to fetch the exchange rates for currencies other than USD.\n- **Join**: The `FACT_TRANSACTIONS` table is joined with the `DIM_ACCOUNT` table on `account_id`.\n- **Currency Handling**: The `CASE` statement checks if the currency is USD. If it is, it uses the notional directly; otherwise, it multiplies the notional by the corresponding FX rate.\n- **Filtering**: The query filters for unsettled transactions based on a hypothetical `status` field.\n- **Aggregation**: The results are grouped by `custodian_id` to get the total unsettled notional per custodian.\n\nMake sure to replace `FX_TABLE` with the actual name of your foreign exchange rates table and adjust any field names as necessary based on your schema."
+    },
+    {
+      "augmented": true,
+      "request": "turn these sprint retro notes into a powerpoint outline slide with talking points:\n\n- masking jobs missed 2 batch windows due to upstream schema drift  \n- audit UI: positive feedback, but need tooltips for retention statuses  \n- data lineage chain performance improved by 25% after cache tuning  \n- masking templates still confusing for new customers  \n- 2 false positives in PII scanner triggered incident; root cause: legacy test data  \n- glidepath to SOC2 looks on track, just need finalize policy docs\n\njust make sure you don\u2019t make up any extra details or expand on stuff that\u2019s not here",
+      "answer": "# Sprint Retrospective Outline\n\n## Slide Title: Sprint Retrospective Highlights\n\n### 1. Masking Jobs\n- **Issue:** Missed 2 batch windows\n- **Cause:** Upstream schema drift\n\n### 2. Audit UI Feedback\n- **Positive Feedback:** General satisfaction with the UI\n- **Improvement Needed:** Tooltips for retention statuses\n\n### 3. Data Lineage Chain Performance\n- **Improvement:** Performance increased by 25%\n- **Action:** Result of cache tuning\n\n### 4. Masking Templates\n- **Challenge:** Still confusing for new customers\n\n### 5. PII Scanner Incident\n- **Issue:** 2 false positives triggered an incident\n- **Root Cause:** Legacy test data\n\n### 6. SOC2 Glidepath\n- **Status:** On track\n- **Next Steps:** Finalize policy documents\n\n---\n\n*Use this outline to guide the discussion during the retrospective, ensuring each point is addressed succinctly and clearly.*"
+    }
+  ],
+  "signature": {
+    "instructions": "Please provide a detailed and structured response to the following request related to project management documentation. Ensure that your output includes relevant sections such as overviews, tables, bullet points, and analyses based on the specific needs of the user. The response should be formatted clearly to facilitate understanding and should address the user's inquiry effectively. For example, if the request is about summarizing sprint performance, include a table with task descriptions, estimated vs. actual time, variance, and any significant insights. Focus on clarity, precision, and maintaining a collaborative tone throughout the response.",
+    "fields": [
+      {
+        "prefix": "Request:",
+        "description": "${request}"
+      },
+      {
+        "prefix": "Answer:",
+        "description": "${answer}"
+      }
+    ]
+  },
+  "lm": null,
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "2.6.22",
+      "cloudpickle": "3.1"
+    }
+  }
+}

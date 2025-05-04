@@ -1,0 +1,38 @@
+{
+    "Product Manager": [
+      "You've received a one-line feature request email that says: “Need analytics toggle in FLOW before quarter end.” Turn it into a fully-formed Jira *epic* using the house template, including a crisp 'Why now?' line.",
+      "Summarize twenty mixed-tone Slack comments about the new PULSE predictive ladder into a decision log entry and list follow-up action items with owners.",
+      "Rewrite a draft release note (rough bullet list provided) into public-facing copy that respects the QGS style and includes the mandatory copyright footer.",
+      "Create a ranked backlog view: pull the current Jira issues tagged `security`, score them against OKR-weightings you specify and output the top five.",
+      "Help construct an Excel formula that projects 13-week cash burn based on three variable inputs; provide the formula and explain it line-by-line."
+    ],
+    "Project Manager": [
+      "Draft tomorrow's Front-Door Weekly agenda email, automatically filling the timeboxes and leaving placeholders for new-intake items.",
+      "Take raw sprint retro notes (bullet list) and convert them into a single PowerPoint outline slide with talking points.",
+      "Build a RACI matrix in Markdown given a list of eight tasks and five stakeholders; highlight any 'None' gaps.",
+      "Send a mid-sprint scope-change update to all stakeholders, clearly noting impact on timeline and resources.",
+      "Produce a Confluence summary that tallies estimate-vs-actual variance for the last three sprints, with a call-out for any task >50% overrun."
+    ],
+    "Developer": [
+      "Write an optimized Snowflake SQL query that returns unsettled notional (in USD) per custodian for QG-SPARK, joining FACT_TRANSACTIONS and DIM_ACCOUNT and accounting for FX if ccy != USD.",
+      "Generate a Hive query that joins FACT_LIQUIDITY_SNAP to DIM_ACCOUNT and buckets available_amt by country.",
+      "Produce a skeleton Go microservice that consumes Prometheus alerts and publishes VaR deltas to a Kafka topic.",
+      "Refactor an existing Python ETL script (snippet supplied) to use parameterized queries and add unit tests.",
+      "Explain, with code, how to implement two-phase commit adapters for QG-LYNK in Java, including rollback handling."
+    ],
+    "Client Services": [
+      "Compose a SEV-2 downtime alert for a QG-LYNX latency spike that started at 13:07UTC and presently affects 12% of IOC orders.",
+      "Draft an FAQ reply explaining what 'tokenization' means in EDGE-X, citing the correct doc section and inviting the client to DM if PII is required; end with the 🪨📜 emoji sandwich.",
+      "Summarize a 30-minute client call where the customer requested batch export in SPARK and raised a concern about EU data residency.",
+      "Create a quarterly 'feature adoption' report email for three major clients, pulling fake numbers you invent and suggesting next-steps nudges.",
+      "Rewrite a terse internal incident note into a polished post-mortem summary suitable for the public glyph-book repo."
+    ],
+    "Marketer": [
+      "Create a three-paragraph launch announcement for CORE's new 'AWS Futures hedging autopilot', following the Problem→New Glyph→Benefit metric structure.",
+      "Rewrite a landing-page hero line from 'Realtime risk like never before' into something that matches the QGS voice and bans hype words.",
+      "Draft a LinkedIn carousel (five slides, 20-words each) explaining how LYNX achieves ≤50µs determinism.",
+      "Produce a 200-word abstract for a technical white-paper on SPARK's atomic DvP across FedNow and crypto rails.",
+      "Generate a tweet-thread (7 tweets) unpacking the archaeology metaphor behind the phrase 'decode markets like glyphs on stone'."
+    ]
+  }
+  
