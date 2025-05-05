@@ -17,8 +17,8 @@ This repo illustrates how to refine your system prompt given typical collected u
 ## Installation
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/easy-dspy.git
-cd easy-dspy
+git clone https://github.com/jeffleft/easy-prompt-optimization.git
+cd easy-prompt-optimization
 ```
 
 2. Create and activate a virtual environment:

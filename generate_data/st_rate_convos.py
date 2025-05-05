@@ -34,10 +34,23 @@ def save_feedback(feedback_data):
 st.title("💬 Conversation Viewer")
 
 # Load conversations
-conversations = load_conversations("conversations.jsonl")
+conversations = load_conversations("../data/conversations.jsonl")
 
 # Sidebar with conversation selection
 st.sidebar.title("Navigation")
+
+# Initialize conversation index
+conversation_index = 0
+
+# Add back and next buttons
+col1, col2 = st.sidebar.columns(2)
+with col1:
+    if st.button("⬅️ Back"):
+        conversation_index = max(0, conversation_index - 1)
+with col2:
+    if st.button("Next ➡️"):
+        conversation_index = min(len(conversations) - 1, conversation_index + 1)
+
 conversation_index = st.sidebar.selectbox(
     "Select Conversation",
     range(len(conversations)),

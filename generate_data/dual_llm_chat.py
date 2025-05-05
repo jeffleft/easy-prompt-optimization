@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 dual_llm_chat.py
 
@@ -18,7 +17,7 @@ load_dotenv()
 client = OpenAI()
 
 
-def evaluate_conversation_completion(messages: list, judge_model: str = "gpt-4") -> bool:
+def evaluate_conversation_completion(messages: list, judge_model: str = "gpt-4.1") -> bool:
     """Use an LLM to evaluate if the conversation has reached a natural conclusion."""
     # Format the conversation for the judge
     conversation_text = "\n".join([
@@ -132,7 +131,7 @@ def main():
         help="Default model name to use for the user LLM."
     )
     parser.add_argument(
-        "--assistant_model", type=str, default="gpt-4.1",
+        "--assistant_model", type=str, default="gpt-4o-mini",
         help="Default model name to use for the assistant LLM."
     )
     parser.add_argument(

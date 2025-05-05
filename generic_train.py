@@ -1,13 +1,35 @@
 import json, random, pathlib, os
 from dotenv import load_dotenv
 from pydantic import BaseModel
+import logging
 
 import openai
 from openai import OpenAI
 from rouge_score import rouge_scorer
 import dspy
-from dspy.teleprompt import MIPROv2
+#from dspy.teleprompt import MIPROv2
+from custom_mipro import (
+    MIPROv2WithCustomProposer,
+    CustomKnowledgeProposer,
+    CustomGenerateModuleInstruction,
+    generate_instruction_class_with_knowledge
+)
 
+# Set up logging
+logging.basicConfig(
+    level=logging.DEBUG,  # Set root logger to DEBUG to allow all levels
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('debug.log'),  # File handler for DEBUG logs
+        logging.StreamHandler()  # Console handler
+    ]
+)
+
+# Set individual handler levels
+logging.getLogger().handlers[0].setLevel(logging.DEBUG)  # File handler
+logging.getLogger().handlers[0].setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(funcName)s'))
+
+logging.getLogger().handlers[1].setLevel(logging.INFO)   # Console handler
 
 # load openai api key
 load_dotenv()
@@ -55,7 +77,7 @@ random.seed(347)
 # ---------- load + join ----------
 def create_examples(use_initial_query=True):
     out = []
-    fb   = json.loads((DATA_DIR/"feedback_20250504_123148.json").read_text())
+    fb   = json.loads((DATA_DIR/"feedback_20250504_170617.json").read_text())
     pos  = {k for k,v in fb.items() if v["feedback"]=="positive"}
 
     for line in (DATA_DIR/"conversations.jsonl").read_text().splitlines():
@@ -83,15 +105,17 @@ val, train = examples[:int(.2*len(examples))], examples[int(.2*len(examples)):]
 
 # ---------- signature + module ----------
 class ConvQA(dspy.Signature):
-    """You are a helpful assistant powered by a large language model."""
-    request: str            = dspy.InputField()
-    answer:  str            = dspy.OutputField()
+    """You are a helpful assistant at QuantGlyph Systems, powered by a large language model."""
+    request: str = dspy.InputField()
+    answer:  str = dspy.OutputField()
 
 qa = dspy.Predict(ConvQA)
 
-tp = MIPROv2(metric=combo_metric,
-            #teacher_settings={"extra_content": open("generate_data/quantglyph_org.md", "r").read()},
-            auto="medium")
+tp = MIPROv2WithCustomProposer(metric=combo_metric,
+                               custom_knowledge_document=open("generate_data/quantglyph_org.md", 'r').read(),
+                               #prompt_model=dspy.LM('openai/o4-mini', api_key=os.getenv("OPENAI_API_KEY"), max_tokens=20000, temperature=1.0),
+                               prompt_model=dspy.LM('gpt-4o-mini', api_key=os.getenv("OPENAI_API_KEY")),
+                               auto="medium")
 
 best = tp.compile(qa, trainset=train, valset=val)
 best.save("basic_prompt.json")

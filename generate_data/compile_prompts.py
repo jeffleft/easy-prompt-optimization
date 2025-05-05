@@ -1,32 +1,13 @@
 import json
 import re
 
-ASSISTANT_PROMPT = "You are a helpful assistant powered by a large language model."
+ASSISTANT_PROMPT = "You are a helpful assistant at QuantGlyph Systems, powered by a large language model."
 DEFAULT_N = 3
 
-USER_PROMPT = """You are a $ROLE at QuantGlyph Systems, working on the $PRODUCT. 
+USER_PROMPT = """You are a $ROLE at QuantGlyph Systems$PRODUCT
 
 Here is some background information on the company and its products:
-## 1 Company Snapshot
- Founded:  1984, spin-out from a COBOL-heavy regional clearing bank
- Mythos:  Decode markets like glyphs on stone.
- Scope:  B2B2C rails for 210 + neobanks & broker-dealers; still runs a z/OS island nobody dares power-cycle.
-
-## 2 Product Constellation
-> Naming scheme `QG-[ACRONYM]`; sometimes acronyms are overloaded by unrelated products.
-| Code | Long name | 1-2 sentence snapshot |
-|------|-----------|-----------------------|
-| QG-EDGE | Enterprise Data Governance Engine | Maps every byte that enters your estate, stitches a cryptographic lineage chain, and enforces masking/retention rules in-flight so auditors can self-serve proofs in seconds. |
-| QG-EDGE | Edge Device Gateway Exchange | Low-latency MQTT/REST bridge funneling payments & telemetry from 200k+ POS/IoT endpoints into core ledgers, with built-in tokenization for card-present data. |
-| QG-LYNX | Liquidity Yield eXchange | Smart-routes block orders across dark pools, CLOBs, and internalizers, arbitraging micro-spreads while guaranteeing ≤50µs determinism for best-ex post-trade reports. |
-| QG-LYNK | Legacy Integration Node Kit | Generates drop-in adapters that let 1980s MQ/IMS workflows publish protobuf events; think 'Zapier for mainframes' but with two-phase commit. |
-| QG-FLOW |  Financial Ledger Orchestration Workbench  | Event-sourced general ledger that snapshots every state transition to Parquet, enabling rewindable 'what-if' replays and instant multi-GAAP views. |
-| QG-CORE |  Cloud Ops Risk Engine  | Consumes Prometheus/Grafana telemetry, converts infra blips into VaR deltas, and auto-spins capacity hedges on AWS Futures when thresholds spike. |
-| QG-CORE (S)  |  Compute-Optimized Rendering Service  | GPU-backed microservice turning terabyte-scale risk cubes into interactive WebGL heatmaps, exporting to PDF/PNG for the PowerPoint crowd. |
-| QG-PULSE |  Predictive Utilization & Liquidity Scenario Engine  | Runs Monte-Carlo + LLM macro narratives to forecast cash gaps 30 days out, then prescribes cheapest funding ladders—no human in the loop required. |
-| QG-PULL |  Portfolio Unified Liquidity Ledger  | Normalizes fragmented custody feeds into a single intraday cash position, tagging each movement with Basel III LCR weightings for treasury at a glance. |
-| QG-SPARK |  Settlement Processing & Reconciliation Kit  | Provides atomic DvP across ACH, FedNow, RTP, and crypto rails; mismatches auto-generate ISO 20022 dispute messages and webhook callbacks. |
-| QG-SPAR |  Synthetic Pricing Analytics Repository  | Central vault of OTC model libraries (SABR, HJM, neural Greeks) with versioned calibration sets, letting quants 'pip install' new curves like plugins. |
+$COMPANY_BACKGROUND
 
 Today you have the following task: $TASK.
 
@@ -48,8 +29,8 @@ def extract_product_from_task(task):
     # Look for QG- followed by uppercase letters
     match = re.search(r'QG-([A-Z]+)', task)
     if match:
-        return f"QG-{match.group(1)}"
-    return "QG-EDGE"  # Default to EDGE if no product found
+        return f", working on the QG-{match.group(1)} product."
+    return "."
 
 def format_sample_exchange(sample_convo):
     """Format the sample conversation into a readable string."""
@@ -68,6 +49,10 @@ def main():
     
     # Format sample exchange
     sample_exchange = format_sample_exchange(sample_convo)
+
+    # Load company background
+    with open("quantglyph_org.md", "r") as f:
+        company_background = f.read()
     
     # Generate prompts for each role and task
     prompts = []
@@ -78,6 +63,7 @@ def main():
             user_prompt = user_prompt.replace("$PRODUCT", product)
             user_prompt = user_prompt.replace("$TASK", task)
             user_prompt = user_prompt.replace("$SAMPLE_EXCHANGE", sample_exchange)
+            user_prompt = user_prompt.replace("$COMPANY_BACKGROUND", company_background)
             
             prompts.append({
                 "user_system_prompt": user_prompt,

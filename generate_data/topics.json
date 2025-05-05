@@ -1,38 +1,63 @@
 {
     "Product Manager": [
-      "You've received a one-line feature request email that says: “Need analytics toggle in FLOW before quarter end.” Turn it into a fully-formed Jira *epic* using the house template, including a crisp 'Why now?' line.",
+      "You've received a one-line feature request email that says: 'Need analytics toggle in FLOW before quarter end.' Turn it into a fully-formed Jira *epic* using the house template, including a crisp 'Why now?' line.",
       "Summarize twenty mixed-tone Slack comments about the new PULSE predictive ladder into a decision log entry and list follow-up action items with owners.",
       "Rewrite a draft release note (rough bullet list provided) into public-facing copy that respects the QGS style and includes the mandatory copyright footer.",
       "Create a ranked backlog view: pull the current Jira issues tagged `security`, score them against OKR-weightings you specify and output the top five.",
-      "Help construct an Excel formula that projects 13-week cash burn based on three variable inputs; provide the formula and explain it line-by-line."
+      "Help construct an Excel formula that projects 13-week cash burn based on three variable inputs; provide the formula and explain it line-by-line.",
+      "Diagnose an Excel pivot-table that refuses to auto-refresh; provide step-by-step troubleshooting and the final formula fix.",
+      "Translate a 500-word stakeholder email into a crisp 6-bullet briefing for engineering, preserving every decision and open question.",
+      "Audit a 15-message email thread for missing compliance disclaimers; highlight gaps and suggest boilerplate inserts.",
+      "Draft a product-FAQ entry explaining EDGE-X's tokenization latency budget (<20 ms), in QGS style and second-person voice.",
+      "Generate talking points (≤120 words each) for a customer webinar on FLOW's rewindable ledgers, including one archaeology-themed metaphor."
     ],
     "Project Manager": [
       "Draft tomorrow's Front-Door Weekly agenda email, automatically filling the timeboxes and leaving placeholders for new-intake items.",
       "Take raw sprint retro notes (bullet list) and convert them into a single PowerPoint outline slide with talking points.",
       "Build a RACI matrix in Markdown given a list of eight tasks and five stakeholders; highlight any 'None' gaps.",
       "Send a mid-sprint scope-change update to all stakeholders, clearly noting impact on timeline and resources.",
-      "Produce a Confluence summary that tallies estimate-vs-actual variance for the last three sprints, with a call-out for any task >50% overrun."
+      "Produce a Confluence summary that tallies estimate-vs-actual variance for the last three sprints, with a call-out for any task >50% overrun.",
+      "Convert a list of global meeting times into an .ics snippet, adjusting for each attendee's time zone and adding a Front-Door Weekly agenda in the description.",
+      "Populate the risk register: take sprint-retro notes (plain text) and surface any new 'red' items with probability x impact scoring.",
+      "Draft a 'sprint-end reflection' email that balances kudos with two process improvements, using the sandwich feedback model.",
+      "Update a Gantt-chart spreadsheet: write the Excel/Sheets formulas that auto-shift dependent tasks when a phase slips by X days.",
+      "From a Zoom transcript, extract action items and owners, then format them into the 43-45 lightning-round section of next week's agenda."
     ],
     "Developer": [
       "Write an optimized Snowflake SQL query that returns unsettled notional (in USD) per custodian for QG-SPARK, joining FACT_TRANSACTIONS and DIM_ACCOUNT and accounting for FX if ccy != USD.",
       "Generate a Hive query that joins FACT_LIQUIDITY_SNAP to DIM_ACCOUNT and buckets available_amt by country.",
       "Produce a skeleton Go microservice that consumes Prometheus alerts and publishes VaR deltas to a Kafka topic.",
       "Refactor an existing Python ETL script (snippet supplied) to use parameterized queries and add unit tests.",
-      "Explain, with code, how to implement two-phase commit adapters for QG-LYNK in Java, including rollback handling."
+      "Explain, with code, how to implement two-phase commit adapters for QG-LYNK in Java, including rollback handling.",
+      "Write a Python script that auto-generates gRPC stubs for the upcoming PULSE v2 protobufs and publishes them to the internal Artifactory.",
+      "Optimize an existing Hive query on FACT_LIQUIDITY_SNAP so it prunes partitions by `snap_ts` and runs in under 30s.",
+      "Draft a Terraform module that provisions GPU nodes for CORE-S with auto-scaling based on Prometheus `gpu_util` metrics.",
+      "Translate a latency-critical matching algorithm from pseudocode into C++17, emphasizing lock-free data structures for LYNX.",
+      "Produce a code-review checklist (Markdown) tailored to multi-threaded Go microservices that handle Kafka back-pressure."
     ],
     "Client Services": [
       "Compose a SEV-2 downtime alert for a QG-LYNX latency spike that started at 13:07UTC and presently affects 12% of IOC orders.",
       "Draft an FAQ reply explaining what 'tokenization' means in EDGE-X, citing the correct doc section and inviting the client to DM if PII is required; end with the 🪨📜 emoji sandwich.",
       "Summarize a 30-minute client call where the customer requested batch export in SPARK and raised a concern about EU data residency.",
       "Create a quarterly 'feature adoption' report email for three major clients, pulling fake numbers you invent and suggesting next-steps nudges.",
-      "Rewrite a terse internal incident note into a polished post-mortem summary suitable for the public glyph-book repo."
+      "Rewrite a terse internal incident note into a polished post-mortem summary suitable for the public glyph-book repo.",
+      "Prepare a template email responding to a GDPR 'right-to-erasure' request, referencing the correct EDGE data-retention controls.",
+      "Turn a terse internal bug-fix note into a customer-facing status update that fits the Feature-Update Rule of Three.",
+      "Compose a quarterly uptime report for three flagship clients, summarizing SLA figures and embedding links to Grafana dashboards.",
+      "Explain to a confused prospect the difference between QG-LYNX and QG-LYNK in a three-bullet comparison; close with 🪨📜.",
+      "Draft a personalized maintenance-window notification for clients running EDGE-X and SPARK, listing expected impact by product."
     ],
     "Marketer": [
       "Create a three-paragraph launch announcement for CORE's new 'AWS Futures hedging autopilot', following the Problem→New Glyph→Benefit metric structure.",
       "Rewrite a landing-page hero line from 'Realtime risk like never before' into something that matches the QGS voice and bans hype words.",
       "Draft a LinkedIn carousel (five slides, 20-words each) explaining how LYNX achieves ≤50µs determinism.",
       "Produce a 200-word abstract for a technical white-paper on SPARK's atomic DvP across FedNow and crypto rails.",
-      "Generate a tweet-thread (7 tweets) unpacking the archaeology metaphor behind the phrase 'decode markets like glyphs on stone'."
+      "Generate a tweet-thread (7 tweets) unpacking the archaeology metaphor behind the phrase 'decode markets like glyphs on stone'.",
+      "Create five subject-line variants (A/B test) for an EDGE-X newsletter announcing new POS tokenization throughput benchmarks.",
+      "Rewrite a dense technical blog draft into a seven-post Mastodon thread while preserving all numeric claims and citations.",
+      "Craft a single-sentence value proposition for SPAR's model vault, aimed at quant developers, avoiding hype words.",
+      "Generate booth-backdrop copy (12-word max) for an upcoming fintech expo, weaving in the 'decode glyphs' mythos.",
+      "Propose three press-release headlines for FLOW's multi-GAAP replay engine launch—each under 100 characters and house-style compliant."
     ]
   }
   
