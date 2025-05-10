@@ -91,6 +91,20 @@ To illustrate how this library works, I generated sample conversations between t
 
 The synthetic data serves as a realistic example of how the system can be used to optimize prompts for a specific company's needs. You can find the generated conversations in the `data/` directory and use them as a template for your own data collection.
 
+## Enterprise Assistant Dashboard
+When deploying an internal ChatGPT, companies can benefit from a high-level view of the performance of the assistant, as well as an understanding of potential productivity gains. We include a simple demo of how a dashboard for monitoring and analyzing the usage of the assistant based on chat logs might function.
+
+![Dashboard Screenshot](data/images/Screenshot%202025-05-09%20at%202.48.20%20PM.png)
+
+Here you can see productivity gains estimated from the type of task being accomplished in each (successful) conversation:
+
+![Detailed Metrics](data/images/Screenshot%202025-05-09%20at%202.48.28%20PM.png)
+
+To access the dashboard, run:
+```bash
+streamlit run st_o11y.py
+```
+
 ## License
 MIT License
 
