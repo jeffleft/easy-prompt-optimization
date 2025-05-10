@@ -1,0 +1,367 @@
+{
+    "messages": [
+        {
+            "role": "system",
+            "content": "Your input fields are:
+1. `dataset_description` (str): A description of the dataset that we are using.
+2. `program_code` (str): Language model program designed to solve a particular task.
+3. `program_description` (str): Summary of the task the program is designed to solve, and how it goes about solving it.
+4. `module` (str): The module to create an instruction for.
+5. `module_description` (str): Description of the module to create an instruction for.
+6. `task_demos` (str): Example inputs/outputs of our module.
+7. `basic_instruction` (str): Basic instruction.
+8. `tip` (str): A suggestion for how to go about generating the new instruction.
+9. `custom_knowledge_document` (str): A custom document providing relevant context, definitions, or examples (e.g., acronyms). Use this to inform the proposed instruction.
+Your output fields are:
+1. `proposed_instruction` (str): Propose an instruction that will be used to prompt a Language Model to perform this task, incorporating relevant information from the custom knowledge document where appropriate.
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## dataset_description ## ]]
+{dataset_description}
+
+[[ ## program_code ## ]]
+{program_code}
+
+[[ ## program_code ## ]]
+{program_code}
+
+[[ ## program_description ## ]]
+{program_description}
+
+[[ ## module ## ]]
+{module}
+
+[[ ## module_description ## ]]
+{module_description}
+
+[[ ## task_demos ## ]]
+{task_demos}
+
+[[ ## basic_instruction ## ]]
+{basic_instruction}
+
+[[ ## tip ## ]]
+{tip}
+
+[[ ## custom_knowledge_document ## ]]
+{custom_knowledge_document}
+
+[[ ## proposed_instruction ## ]]
+{proposed_instruction}
+
+[[ ## completed ## ]]
+{completed}
+
+In adhering to this structure, your objective is: 
+        Use the information below, including the custom knowledge document, to learn about a task that we are trying to solve using calls to an LM, then generate a new instruction that will be used to prompt a Language Model to better solve the task."
+    },
+    {
+        "role": "user",
+        "content": "[[ ## dataset_description ## ]]
+The dataset reveals a strong trend towards seeking structured communication and documentation in technical domains, with users requesting templates and frameworks for emails, reports, and project management. There is a notable emphasis on compliance and regulatory standards, particularly in finance and technology sectors, underscoring the importance of clarity, accountability, and risk management in technical implementations. Additionally, the responses provided are actionable and practical, reflecting a clear inclination towards process optimization and immediate applicability in real-world scenarios.
+
+[[ ## program_code ## ]]
+
+[[ ## program_description ## ]]
+The program is designed to assist users in generating content and code snippets based on specific requests. It effectively handles two main types of tasks: providing creative suggestions (such as subject lines for a newsletter) and generating technical scripts (like a Python script for creating gRPC stubs and publishing them to Artifactory). The program processes user requests by interpreting the input and generating appropriate outputs, which can range from marketing materials to technical documentation. Additionally, it can summarize and format retrospective meeting notes into a structured PowerPoint outline, demonstrating its versatility in both creative and technical domains.
+
+[[ ## module ## ]]
+Predict(request) -> answer
+
+[[ ## module_description ## ]]
+The `Predict(request) -> answer` module serves as the core functionality of the program, where it interprets user requests and generates appropriate responses. This module utilizes natural language processing techniques to understand the context and intent behind the input. It effectively differentiates between creative tasks, such as generating subject lines or summarizing meeting notes, and technical tasks, like creating code snippets. By leveraging trained language models, this module provides users with relevant and coherent outputs tailored to their specific needs, thereby enhancing user experience and productivity.
+
+[[ ## task_demos ## ]]
+Request: need 5 subject line options for a QG-EDGE-X (Edge-Device Gateway Exchange) newsletter—announcing new POS tokenization throughput benchmarks
+Answer: 1. "Unlocking Efficiency: New POS Tokenization Throughput Benchmarks for QG-EDGE-X"
+2. "Boost Your Transactions: Discover Our Latest POS Tokenization Throughput Results"
+3. "QG-EDGE-X Update: Enhanced POS Tokenization Throughput Benchmarks Revealed!"
+4. "Breaking Records: New Throughput Benchmarks for POS Tokenization on QG-EDGE-X"
+5. "Elevate Your Edge: Announcing New POS Tokenization Throughput Achievements"
+
+Request: need python script to generate grpc stubs for PULSE v2 protos & publish them to artifactory
+Answer: Here’s a Python script that generates gRPC stubs for PULSE v2 protocol buffers and publishes them to Artifactory. This script assumes you have the necessary `protoc` compiler and `grpcio-tools` installed, as well as access to your Artifactory instance.
+
+```python
+import os
+import subprocess
+import requests
+
+# Configuration
+PROTO_DIR = \"path/to/pulse_v2_protos\"  # Directory containing .proto files
+OUTPUT_DIR = \"generated_stubs\"          # Directory to store generated stubs
+ARTIFACTORY_URL = \"https: //your-artifactory-instance/artifactory/your-repo\"
+ARTIFACTORY_USER = \"your-username\"
+ARTIFACTORY_PASSWORD = \"your-password\"
+
+# Step 1: Generate gRPC stubs
+def generate_grpc_stubs():
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    proto_files = [f for f in os.listdir(PROTO_DIR) if f.endswith(\".proto\")]
+    
+    for proto_file in proto_files:
+        subprocess.run([
+            \"python\", \"-m\", \"grpc_tools.protoc\",
+            \"-I{}\".format(PROTO_DIR),
+            \"--python_out={}\".format(OUTPUT_DIR),
+            \"--grpc_python_out={}\".format(OUTPUT_DIR),
+            os.path.join(PROTO_DIR, proto_file)
+        ], check=True)
+
+# Step 2: Publish to Artifactory
+def publish_to_artifactory():
+    for root, dirs, files in os.walk(OUTPUT_DIR):
+        for file in files:
+            if file.endswith(\".py\"):
+                file_path = os.path.join(root, file)
+                with open(file_path, \"rb\") as f:
+                    response = requests.put(
+                        f"{ARTIFACTORY_URL
+    }/{file
+    }",
+                        data=f,
+                        auth=(ARTIFACTORY_USER, ARTIFACTORY_PASSWORD)
+                    )
+                    if response.status_code == 201:
+                        print(f"Successfully uploaded {file
+    } to Artifactory.")
+                    else:
+                        print(f"Failed to upload {file
+    }. Status code: {response.status_code
+    }")
+
+if __name__ == \"__main__\":
+    generate_grpc_stubs()
+    publish_to_artifactory()
+```
+
+### Instructions:
+1. **Set Up Environment**: Ensure you have `grpcio-tools` installed. You can install it using pip:
+   ```bash
+   pip install grpcio-tools requests
+   ```
+
+2. **Configure Variables**: Update the `PROTO_DIR`, `OUTPUT_DIR`, `ARTIFACTORY_URL`, `ARTIFACTORY_USER`, and `ARTIFACTORY_PASSWORD` variables in the script to match your environment.
+
+3. **Run the Script**: Execute the script in your terminal:
+   ```bash
+   python your_script_name.py
+   ```
+
+### Notes:
+- The script generates Python gRPC stubs from the `.proto` files located in the specified `PROTO_DIR`.
+- It then uploads the generated `.py` files to the specified Artifactory repository.
+- Ensure that your Artifactory instance is accessible and that the credentials provided have the necessary permissions to upload files.
+
+If you have any specific requirements or modifications needed, feel free to ask!
+
+Request: turn these sprint retro bullets into a ppt outline slide with talking points:
+
+- QG-EDGE pipeline masking fix shipped but QA missed one edge-case (numeric-only postal codes, e.g. DK/SE)
+- QG-FLOW snapshot delays improved by 30% after hotspot partitioning, but overnight ETL jobs still spike heap usage
+- onboarding docs for QG-SPARK are outdated; new joiners confused about Webhook setup
+- team liked “risk spotlight” format—more real-time metrics shared
+- mid-sprint bug bash helped catch 5+ prod issues before release
+Answer: **Slide Title: Sprint Retrospective Highlights**
+
+1. **QG-EDGE Pipeline Masking Fix**
+   - **Talking Point:** A fix was successfully shipped, but QA overlooked an edge case involving numeric-only postal codes (e.g., DK/SE). 
+   - **Action Item:** Review QA processes to ensure comprehensive coverage of edge cases in future releases.
+
+2. **QG-FLOW Snapshot Delays**
+   - **Talking Point:** Snapshot delays have improved by 30% due to hotspot partitioning. However, overnight ETL jobs are still causing spikes in heap usage.
+   - **Action Item:** Investigate further optimizations for ETL jobs to manage heap usage effectively.
+
+3. **Onboarding Documentation for QG-SPARK**
+   - **Talking Point:** Current onboarding documentation is outdated, leading to confusion among new joiners regarding Webhook setup.
+   - **Action Item:** Update onboarding documents to reflect the latest processes and configurations.
+
+4. **“Risk Spotlight” Format**
+   - **Talking Point:** The team appreciated the “risk spotlight” format, which provided more real-time metrics and insights.
+   - **Action Item:** Continue using this format in future meetings to enhance visibility on project risks.
+
+5. **Mid-Sprint Bug Bash**
+   - **Talking Point:** A mid-sprint bug bash was conducted, successfully identifying and resolving over 5 production issues before the release.
+   - **Action Item:** Schedule regular bug bashes to maintain quality and catch issues early in the development cycle.
+
+
+[[ ## basic_instruction ## ]]
+You are a helpful assistant at QuantGlyph Systems, powered by a large language model.
+
+[[ ## tip ## ]]
+Keep the instruction clear and concise.
+
+[[ ## custom_knowledge_document ## ]]
+# QuantGlyph\u202fSystems (QGS) – 
+
+## 1 · Company Snapshot
+
+* **Founded:** 1984, spin‑out from a COBOL‑heavy regional clearing bank  
+* **Mythos:** “Decode markets like glyphs on stone.”  
+* **Scope:** B2B2C rails for 210\u202f+ neo‑banks & broker‑dealers; still runs a z/OS island nobody dares power‑cycle.
+
+---
+
+## 2 · Product Constellation
+
+> Naming scheme `QG‑{ACRONYM}`; acronym twins are unrelated.
+
+| Code | Long name | 1‑2‑sentence snapshot |
+|------|-----------|-----------------------|
+| QG‑**EDGE** | **Enterprise\u202fData\u202fGovernance\u202fEngine** | Maps every byte that enters your estate, stitches a cryptographic lineage chain, and enforces masking/retention rules in‑flight so auditors can self‑serve proofs in seconds. |
+| QG‑**EDGE‑X** | **Edge‑Device\u202fGateway\u202fExchange** | Low‑latency MQTT/REST bridge funneling payments & telemetry from 200k\u202f+ POS/IoT endpoints into core ledgers, with built‑in tokenization for card‑present data. |
+| QG‑LYNX | **Liquidity\u202fYield\u202feXchange** | Smart‑routes block orders across dark pools, CLOBs, and internalizers, arbitraging micro‑spreads while guaranteeing ≤\u202f50\u202fµs determinism for best‑ex post‑trade reports. |
+| QG‑LYNK | **Legacy\u202fIntegration\u202fNode\u202fKit** | Generates drop‑in adapters that let 1980s MQ/IMS workflows publish protobuf events; think “Zapier for mainframes” but with two‑phase commit. |
+| QG‑FLOW | **Financial\u202fLedger\u202fOrchestration\u202fWorkbench** | Event‑sourced general ledger that snapshots every state transition to Parquet, enabling rewindable “what‑if” replays and instant multi‑GAAP views. |
+| QG‑**CORE** | **Cloud\u202fOps\u202fRisk\u202fEngine** | Consumes Prometheus/Grafana telemetry, converts infra blips into VaR deltas, and auto‑spins capacity hedges on AWS\u202fFutures when thresholds spike. |
+| QG‑**CORE‑S** | **Compute‑Optimized\u202fRendering\u202fService** | GPU‑backed microservice turning terabyte‑scale risk cubes into interactive WebGL heatmaps, exporting to PDF/PNG for the PowerPoint crowd. |
+| QG‑PULSE | **Predictive\u202fUtilization\u202f&\u202fLiquidity\u202fScenario\u202fEngine** | Runs Monte‑Carlo + LLM macro narratives to forecast cash gaps 30\u202fdays out, then prescribes cheapest funding ladders—no human in the loop required. |
+| QG‑PULL | **Portfolio\u202fUnified\u202fLiquidity\u202fLedger** | Normalizes fragmented custody feeds into a single intraday cash position, tagging each movement with Basel\u202fIII LCR weightings for treasury at a glance. |
+| QG‑SPARK | **Settlement\u202fProcessing\u202f&\u202fReconciliation\u202fKit** | Provides atomic DvP across ACH, FedNow, RTP, and crypto rails; mismatches auto‑generate ISO\u202f20022 dispute messages and webhook callbacks. |
+| QG‑SPAR | **Synthetic\u202fPricing\u202fAnalytics\u202fRepository** | Central vault of OTC model libraries (SABR, HJM, neural Greeks) with versioned calibration sets, letting quants “pip install” new curves like plugins. |
+
+---
+
+## 3 · External‑Facing Style Guide
+
+| Element | Rule |
+|---------|------|
+| **Voice** | “Seasoned cryptographer explaining to a sharp intern.” |
+| **Tone** | Confident, zero hype, metaphors from archaeology & circuitry. |
+| **Person** | 2nd person singular (“you”); avoid “users.” |
+| **Jargon** | Define on 1st use `(e.g., DV01 – dollar value of a basis point)`. |
+| **Numerals** | Always SI or ISO‑4217; no “$” without currency code. |
+| **Typography** | Use en‑dashes for ranges, never em‑dashes for pauses. |
+| **Prohibited words** | “Revolutionary,” “game‑changing,” “solutioneering.” |
+| **Boilerplate footer** | `©1984‑{YEAR} QuantGlyph\u202fSystems. All glyphs deciphered.` |
+
+---
+
+## 4 · PM Jira Ticket Template
+
+```text
+[Title] {Product‑Code}: <imperative verb> <concise objective>
+---
+Context
+• Why now? (≤100\u202fw)
+• Linked OKRs / Risk IDs
+
+Acceptance\u202fCriteria  (Gherkin)
+1. Given …
+2. When …
+3. Then …
+
+Tech\u202fNotes
+• Constraints / non‑goals
+• Edge‑cases enumerated
+
+Artifacts
+- Figma link
+- API\u202fschema diff
+- Roll‑back plan
+
+Story\u202fPoints: _t‑shirt_  |  Priority: P{1‑4}
+
+Rule: One logical change == one ticket; cross‑product impacts spawn linked subtasks.
+```
+
+---
+
+## 5 · Meeting Agenda Format
+
+```text
+┌────────── Front‑Door Weekly (45\u202fmin) ──────────┐
+│ 00‑05  Quick round‑robin: 1‑sentence “blocker or brag”          │
+│ 05‑15  New intake triage: each item scored on Effort/Value      │
+│ 15‑25  Decision log review: ensure Confluence entries minted    │
+│ 25‑35  Retro on last week’s estimates vs actuals                │
+│ 35‑43  Risk spotlight: pick 1 red flag, deep‑dive               │
+│ 43‑45  Actions & owners lightning‑round                         │
+└──────────────────────────────────────────────────────────────────┘
+```
+*Other rituals reuse the shell; only the middle segments swap.*
+
+---
+
+## 6 · Client‑Facing Comms Cheat‑Sheet
+
+### Downtime / Incident Alerts
+*Subject:* `[QGS] {Product‑Code} – Service Interruption (SEV‑{1‑4})`
+
+1. **What happened** (UTC timestamped)  
+2. **Client impact** (measurable, no adjectives)  
+3. **Current status & next ETA**  
+4. **Workarounds** (if any)  
+5. **Next update at {ISO‑time}**
+
+*Post‑mortem* within 48\u202fh; stored in public Git‑backed “glyph‑book.”
+
+### Feature Updates
+Use the **Rule of Three**: *Problem → New Glyph (feature) → Benefit metric*. Optional 30‑s GIF/Loom.
+
+### Forum Answers
+*Sandwich*: Cite doc § → give crisp answer → link deep‑dive → invite DM if PII needed. Sign off with emoji “🪨📜”.
+
+---
+
+## 7 · Canonical Analytics Schemas (Snowflake dialect)
+
+```sql
+-- FACT_TRANSACTIONS
+txn_id           NUMBER      PRIMARY KEY,
+as_of_ts         TIMESTAMP,      -- event time (UTC)
+product_code     STRING,         -- QG-EDGE etc.
+account_sk       NUMBER,         -- FK → DIM_ACCOUNT
+instrument_sk    NUMBER,         -- FK → DIM_INSTRUMENT
+side             STRING,         -- \"BUY\"/\"SELL\"
+qty              NUMBER(38,6),
+notional_ccy     STRING(3),
+notional_amt     NUMBER(38,2),
+fee_amt          NUMBER(38,2),
+status           STRING          -- \"SETTLED\", …
+
+-- DIM_ACCOUNT
+account_sk       NUMBER PRIMARY KEY,
+custodian_code   STRING,
+country_iso      STRING(2),
+opened_dt        DATE,
+risk_bucket      STRING,
+
+-- DIM_INSTRUMENT
+instrument_sk    NUMBER PRIMARY KEY,
+isin             STRING(12),
+asset_class      STRING,
+issuer           STRING,
+maturity_dt      DATE,
+coupon_rate_bp   NUMBER(5,2),
+
+-- FACT_LIQUIDITY_SNAP
+snap_ts          TIMESTAMP,
+account_sk       NUMBER,
+available_ccy    STRING(3),
+available_amt    NUMBER(38,2)
+```
+*Conventions:* surrogate keys `*_sk`; timestamps in UTC; every fact includes `product_code` for lineage.
+
+---
+
+## 8 · Assumptions
+
+* Jira on Atlassian Cloud\u202f10.130.1  
+* Snowflake chosen for ANSI‑SQL & legacy friendliness  
+* All products publish protobuf contracts versioned via Git tags  
+* Regulatory focus: EU‑27 + US CFTC  
+
+
+
+Note you will not have access to this custom knowledge document when deployed; you must copy relevant portions to your proposed_instruction.
+
+Respond with the corresponding output fields, starting with the field `[[ ## proposed_instruction ## ]]`, and then ending with the marker for `[[ ## completed ## ]]`."
+}
+],
+"model": "gpt-4o-mini",
+"max_tokens": 1000,
+"temperature": 0.5381054546423055
+},
+"extra_json": {}
+} - _build_request

@@ -20,7 +20,7 @@ logging.basicConfig(
     level=logging.DEBUG,  # Set root logger to DEBUG to allow all levels
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('debug.log'),  # File handler for DEBUG logs
+        logging.FileHandler('debug2.log'),  # File handler for DEBUG logs
         logging.StreamHandler()  # Console handler
     ]
 )
@@ -113,11 +113,11 @@ qa = dspy.Predict(ConvQA)
 
 tp = MIPROv2WithCustomProposer(metric=combo_metric,
                                custom_knowledge_document=open("generate_data/quantglyph_org.md", 'r').read(),
-                               #prompt_model=dspy.LM('openai/o4-mini', api_key=os.getenv("OPENAI_API_KEY"), max_tokens=20000, temperature=1.0),
-                               prompt_model=dspy.LM('gpt-4o-mini', api_key=os.getenv("OPENAI_API_KEY")),
-                               auto="medium")
+                               task_model=dspy.LM('gpt-4o-mini', api_key=os.getenv("OPENAI_API_KEY")),
+                               prompt_model=dspy.LM('gpt-4.1', api_key=os.getenv("OPENAI_API_KEY"), max_tokens=10000),
+                               auto="light")
 
-best = tp.compile(qa, trainset=train, valset=val)
+best = tp.compile(qa, trainset=train, valset=val, tip_aware_proposer=True)
 best.save("basic_prompt.json")
 
 # output the final system prompt

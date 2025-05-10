@@ -18,7 +18,7 @@ from dspy.teleprompt.utils import get_signature
 # from dspy.teleprompt.utils import get_prompt_model
 # from dspy.propose.utils import get_dspy_source_code
 # from dspy.propose.propose_base import Proposer
-from dspy.propose.grounded_proposer import DescribeProgram, DescribeModule, TIPS
+from dspy.propose.grounded_proposer import DescribeProgram, DescribeModule
 from dspy.propose.grounded_proposer import GroundedProposer
 from dspy.propose.utils import create_predictor_level_history_string, strip_prefix
 
@@ -264,6 +264,16 @@ class CustomGenerateModuleInstruction(dspy.Module):
     
 
 class CustomKnowledgeProposer(GroundedProposer):
+    # Override TIPS from parent class
+    TIPS = {
+        "none": "",
+        "creative": "Don't be afraid to be creative when creating the new instruction!",
+        "custom_knowledge": "Don't be afraid to include as much information as possible from the custom knowledge document when creating the new instruction!",
+        "description": "Make sure your instruction is very informative and descriptive.",
+        "high_stakes": "The instruction should include a high stakes scenario in which the LM must solve the task!",
+        "persona": 'Include a persona that is relevant to the task in the instruction (ie. "You are a ...")',
+    }
+
     # --- ADD custom_knowledge_document to __init__ ---
     def __init__(
         self,
