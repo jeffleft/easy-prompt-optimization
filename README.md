@@ -94,11 +94,11 @@ The synthetic data serves as a realistic example of how the system can be used t
 ## Enterprise Assistant Dashboard
 When deploying an internal ChatGPT, companies can benefit from a high-level view of the performance of the assistant, as well as an understanding of potential productivity gains. We include a simple demo of how a dashboard for monitoring and analyzing the usage of the assistant based on chat logs might function.
 
-![Dashboard Screenshot](data/images/Screenshot%202025-05-09%20at%202.48.20%20PM.png)
+![Dashboard Screenshot](data/images/screenshot_main.png)
 
 Here you can see productivity gains estimated from the type of task being accomplished in each (successful) conversation:
 
-![Detailed Metrics](data/images/Screenshot%202025-05-09%20at%202.48.28%20PM.png)
+![Detailed Metrics](data/images/screenshot_tasks.png)
 
 To access the dashboard, run:
 ```bash
